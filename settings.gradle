@@ -17,3 +17,5 @@ rootProject.name = "Parking"
 include ':automotive'
 include ':data'
 include ':domain'
+include ':car-service'
+include ':app'
