@@ -9,10 +9,19 @@ import se.daresay.domain.base.Response
  * Domain : domain model
  * T : raw response
  */
-fun <Domain , T : ToDomain<Domain>> apiCall(loadingMessage: String, req : suspend () -> T  ) : Flow<Response<Domain>> = flow{
+fun <Domain , T : ToDomain<Domain>> apiCallDomain(loadingMessage: String, req : suspend () -> T  ) : Flow<Response<Domain>> = flow{
     emit(Response.Loading(loadingMessage))
     try {
         emit(Response.Data(req.invoke().toDomain()))
+    }catch (e : Exception){
+        emit(Response.Error(e))
+    }
+}
+
+fun <T> apiCall(loadingMessage: String, req : suspend () -> T  ) : Flow<Response<T>> = flow{
+    emit(Response.Loading(loadingMessage))
+    try {
+        emit(Response.Data(req.invoke()))
     }catch (e : Exception){
         emit(Response.Error(e))
     }

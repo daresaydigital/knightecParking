@@ -6,4 +6,5 @@ import se.daresay.domain.model.ParkingSpot
 
 interface ParkingRepository {
     fun getAllParking(): Flow<Response<List<ParkingSpot>>>
+
 }

@@ -11,4 +11,8 @@ class CarService: CarAppService() {
 
     override fun onCreateSession(): Session =
         MainSession()
+
+    override fun onCreate() {
+        super.onCreate()
+    }
 }
