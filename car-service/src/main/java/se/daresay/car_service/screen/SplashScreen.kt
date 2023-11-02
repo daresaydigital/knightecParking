@@ -13,6 +13,7 @@ import se.daresay.car_service.db.TOKEN
 import se.daresay.car_service.db.load
 import se.daresay.car_service.screen.login.SignInPasswordScreen
 import se.daresay.car_service.screen.login.SignInUserNameScreen
+import se.daresay.car_service.screen.parkings.ParkingSpotsScreen
 
 class SplashScreen(carContext: CarContext) : Screen(carContext) {
     override fun onGetTemplate(): Template {
@@ -26,7 +27,8 @@ class SplashScreen(carContext: CarContext) : Screen(carContext) {
 
         lifecycleScope.launch {
             delay(3000)
-            // TODO go to GRID
+            screenManager.push(ParkingSpotsScreen(carContext))
+            screenManager.remove(this@SplashScreen)
         }
 
         val row = Row.Builder()
