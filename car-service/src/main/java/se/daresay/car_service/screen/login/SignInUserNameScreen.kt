@@ -8,7 +8,7 @@ import androidx.car.app.model.Template
 import androidx.car.app.model.signin.InputSignInMethod
 import androidx.car.app.model.signin.SignInTemplate
 
-class SignInUserNameScreen(carContext: CarContext) : Screen(carContext) {
+class SignInUserNameScreen(carContext: CarContext,val error: String? = null) : Screen(carContext) {
 
     override fun onGetTemplate(): Template {
 
@@ -30,6 +30,7 @@ class SignInUserNameScreen(carContext: CarContext) : Screen(carContext) {
         val signIn = SignInTemplate.Builder(userNameInput)
             .setTitle("Sign In")
             .setInstructions("Enter your username")
+            .setAdditionalText(error?:"")
             .build()
 
         return signIn

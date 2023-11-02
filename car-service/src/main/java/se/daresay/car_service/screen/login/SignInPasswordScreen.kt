@@ -13,9 +13,10 @@ import org.koin.java.KoinJavaComponent.get
 import org.koin.java.KoinJavaComponent.inject
 import se.daresay.car_service.screen.EmptyScreen
 import se.daresay.domain.base.Response
+import se.daresay.domain.model.User
 import se.daresay.domain.repo.LoginRepository
 
-class SignInPasswordScreen constructor(carContext: CarContext, userName: String) : Screen(carContext) {
+class SignInPasswordScreen constructor(carContext: CarContext,private val userName: String) : Screen(carContext) {
 
 
     private lateinit var viewModel : SignInViewModel
@@ -52,19 +53,24 @@ class SignInPasswordScreen constructor(carContext: CarContext, userName: String)
                 when (it){
                     is Response.Idle -> {}
                     is Response.Error -> {
-                        Log.d("HEREHERE","error "+it.exception.message)
+                        screenManager.push(SignInUserNameScreen(carContext,it.exception.message ?: "unknown error"))
                     }
                     is Response.Loading -> {
                         Log.d("HEREHERE","Loading")
                     }
                     is Response.Data -> {
-                        screenManager.push(EmptyScreen(carContext))
+                        if (it.data.token == null)
+                            screenManager.push(SignInUserNameScreen(carContext,it.data.message))
+                        else
+                            screenManager.push(EmptyScreen(carContext))
                     }
                 }
             }
         }
     }
     private fun validate(text: String){
+        Log.d("HEREHERE","HERE")
 
+        viewModel.login(User(userName, text))
     }
 }
