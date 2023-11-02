@@ -10,11 +10,11 @@ import androidx.car.app.model.signin.SignInTemplate
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
-import org.koin.java.KoinJavaComponent.inject
-import se.daresay.car_service.screen.EmptyScreen
+import se.daresay.car_service.db.TOKEN
+import se.daresay.car_service.db.save
+import se.daresay.car_service.screen.SplashScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.User
-import se.daresay.domain.repo.LoginRepository
 
 class SignInPasswordScreen constructor(carContext: CarContext,private val userName: String) : Screen(carContext) {
 
@@ -61,8 +61,10 @@ class SignInPasswordScreen constructor(carContext: CarContext,private val userNa
                     is Response.Data -> {
                         if (it.data.token == null)
                             screenManager.push(SignInUserNameScreen(carContext,it.data.message))
-                        else
-                            screenManager.push(EmptyScreen(carContext))
+                        else {
+                            carContext.save(TOKEN, it.data.token!!)
+                            screenManager.push(SplashScreen(carContext))
+                        }
                     }
                 }
             }
