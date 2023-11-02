@@ -6,11 +6,11 @@ import se.daresay.data.service.ParkingAPI
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.ParkingSpot
 import se.daresay.domain.repo.ParkingRepository
-import javax.inject.Inject
 
-class ParkingRepositoryImp @Inject constructor(
+class ParkingRepositoryImp constructor(
     private val parkingAPI: ParkingAPI
 ): ParkingRepository {
+
     override  fun getAllParking(): Flow<Response<List<ParkingSpot>>> =
         apiCallDomain("loading"){
             parkingAPI.getAllParking()
