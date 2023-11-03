@@ -1,5 +1,7 @@
 package se.daresay.domain.model
 
+import android.content.Intent
+import androidx.core.net.toUri
 import java.lang.Exception
 
 data class ParkingSpot(
@@ -9,7 +11,8 @@ data class ParkingSpot(
     val description: String,
     val isActive: Boolean,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
+    val isFavorite: Boolean = false
 )
 
 enum class Area {
@@ -19,3 +22,9 @@ enum class Area {
 
 fun toArea(str: String): Area =
     Area.valueOf(str)
+
+fun ParkingSpot.toIntent(action: String): Intent {
+    return Intent(action).apply {
+        data = "geo:$latitude,$longitude".toUri()
+    }
+}

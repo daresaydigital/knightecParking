@@ -2,6 +2,8 @@ package se.daresay.car_service.screen.parkings
 
 import androidx.car.app.CarContext
 import androidx.car.app.model.Action
+import androidx.car.app.model.ActionStrip
+import androidx.car.app.model.CarColor
 import androidx.car.app.model.CarIcon
 import androidx.car.app.model.GridItem
 import androidx.car.app.model.GridTemplate
@@ -17,6 +19,7 @@ import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
 import se.daresay.car_service.R
 import se.daresay.car_service.screen.BaseScreen
+import se.daresay.car_service.screen.favorite.FavoritesScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.Area
 
@@ -44,6 +47,7 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
                     }
                     is Response.Data -> {
                         loading = false
+
                         it.data.forEach { office ->
                             listBuilder.addItem(
                                 GridItem.Builder()
@@ -80,6 +84,28 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
         }
     }
 
+    private fun prepareFavorites(): ActionStrip {
+        return ActionStrip.Builder()
+            .addAction(
+                Action.Builder()
+                    .setIcon(
+                        CarIcon.Builder(
+                            IconCompat.createWithResource(
+                                carContext,
+                                R.drawable.baseline_favorite_24
+                            )
+                        ).setTint(
+                            CarColor.RED
+                        )
+                            .build()
+                    )
+                    .setTitle("Favorites")
+                    .setOnClickListener {
+                        screenManager.push(FavoritesScreen(carContext))
+                    }.build()
+            )
+            .build()
+    }
 
     private fun parkingSpots() {
         lifecycleScope.launch {
@@ -113,6 +139,7 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
         val listTemplate = GridTemplate.Builder()
             .setTitle("Office List")
             .setHeaderAction(Action.APP_ICON)
+            .setActionStrip(prepareFavorites())
             .setLoading(loading)
         if (loading)
             listTemplate.setLoading(true)
