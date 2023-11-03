@@ -7,16 +7,30 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.ParkingSpot
+import se.daresay.domain.usecase.GetAllArea
 import se.daresay.domain.usecase.GetAllParking
 
-class ParkingSpotsViewModel(private val getAllParking: GetAllParking): ViewModel()  {
+class ParkingViewModel(
+    private val getAllParking: GetAllParking,
+    private val getAllArea: GetAllArea
+): ViewModel()  {
     private val _parkings: MutableStateFlow<Response<List<ParkingSpot>>> = MutableStateFlow(Response.Idle())
     val parkings = _parkings.asStateFlow()
 
-    fun getParkingSpots(){
+    private val _area: MutableStateFlow<Response<List<String>>> = MutableStateFlow(Response.Idle())
+    val area = _area.asStateFlow()
+    fun getParkingSpots() {
         viewModelScope.launch {
             getAllParking.invoke().collect{
                 _parkings.value = it
+            }
+        }
+    }
+
+    fun getAreas() {
+        viewModelScope.launch {
+            getAllArea.invoke().collect{
+                _area.value = it
             }
         }
     }

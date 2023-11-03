@@ -1,55 +1,31 @@
 package se.daresay.car_service.screen.parkings
 
-import android.util.Log
+import android.graphics.BitmapFactory
 import androidx.car.app.CarContext
-import androidx.car.app.CarToast
-import androidx.car.app.Screen
 import androidx.car.app.model.Action
-import androidx.car.app.model.ActionStrip
 import androidx.car.app.model.CarIcon
 import androidx.car.app.model.GridItem
 import androidx.car.app.model.GridTemplate
 import androidx.car.app.model.ItemList
 import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.get
 import se.daresay.car_service.R
-import se.daresay.domain.base.Response
+import se.daresay.car_service.screen.BaseScreen
 import se.daresay.domain.model.Area
 import se.daresay.domain.model.ParkingSpot
 
-class ParkingSpotsScreen(carContext: CarContext) : Screen(carContext) {
+class ParkingSpotsScreen(
+    carContext: CarContext,
+    private val parkingSpots: List<ParkingSpot>
+) : BaseScreen(carContext) {
 
-    private lateinit var viewModel : ParkingSpotsViewModel
-    val gridItemListBuilder = ItemList.Builder()
+
 
     override fun onGetTemplate(): Template {
-        viewModel = get(ParkingSpotsViewModel::class.java)
-
-        lifecycleScope.launch {
-            viewModel.parkings.collect{
-                when(it){
-                    is Response.Idle -> {
-                        viewModel.getParkingSpots()
-                    }
-                    is Response.Error -> {
-                        Log.d("HERE",it.exception.message.toString())
-                    }
-                    is Response.Data -> {
-                        it.data.forEach {
-                            gridItemListBuilder.addItem(createGridItem(it))
-                        }
-                        invalidate()
-                    }
-                    is Response.Loading -> {
-                        Log.d("HERE",it.msg)
-                    }
-                }
-            }
+        val gridItemListBuilder = ItemList.Builder()
+        parkingSpots.forEach {
+            gridItemListBuilder.addItem(createGridItem(it))
         }
-
 
         return GridTemplate.Builder()
             .setHeaderAction(Action.APP_ICON)
@@ -73,13 +49,13 @@ class ParkingSpotsScreen(carContext: CarContext) : Screen(carContext) {
             .build()
 
     private fun getIcon(type: Area): IconCompat {
-        val mIcon = IconCompat.createWithResource(carContext,
-            when(type) {
-                Area.KISTA -> R.drawable.daresay
-                Area.SOLNA -> R.drawable.knightec
-                Area.UNKNOWN -> R.drawable.unknown
-            }
-        )
+        val resources = carContext.resources
+        val bitmap = when(type) {
+            Area.KISTA -> BitmapFactory.decodeResource(resources, R.drawable.daresay)
+            Area.SOLNA -> BitmapFactory.decodeResource(resources, R.drawable.knightec)
+            Area.UNKNOWN -> BitmapFactory.decodeResource(resources, R.drawable.knightec)
+        }
+        val mIcon = IconCompat.createWithBitmap(bitmap)
         return mIcon
     }
 
