@@ -21,6 +21,7 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
     private var viewModel : ParkingViewModel
     private var listBuilder = ItemList.Builder()
     private var chosenArea = Area.UNKNOWN
+    private var loading = true
     init {
         viewModel = get(ParkingViewModel::class.java)
         area()
@@ -32,19 +33,19 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
             viewModel.area.collect{
                 when(it){
                     is Response.Idle -> {
-                        Log.d("HERE","I'm HERE")
                         viewModel.getAreas()
                     }
                     is Response.Error -> {
-                        Log.d("HERE",it.exception.message.toString())
+                        loading = false
                     }
                     is Response.Data -> {
-                        Log.d("HERE","I'm HERE with data")
-
+                        loading = false
                         it.data.forEach { area ->
                             listBuilder.addItem(
                                 Row.Builder()
                                     .setOnClickListener {
+                                        loading = true
+                                        invalidate()
                                         chosenArea = Area.valueOf(area.uppercase())
                                         viewModel.getParkingSpots()
                                     }
@@ -56,7 +57,7 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
                         invalidate()
                     }
                     is Response.Loading -> {
-                        // TODO needed ?
+                        loading = true
                     }
                 }
             }
@@ -90,11 +91,14 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
     }
 
     override fun onGetTemplate(): Template {
-
-        return ListTemplate.Builder()
-            .setSingleList(listBuilder.build())
+        val listTemplate = ListTemplate.Builder()
             .setTitle("Office List")
             .setHeaderAction(Action.APP_ICON)
-            .build()
+            .setLoading(loading)
+        if (loading)
+            listTemplate.setLoading(true)
+        else
+            listTemplate.setSingleList(listBuilder.build())
+        return listTemplate.build()
     }
 }
