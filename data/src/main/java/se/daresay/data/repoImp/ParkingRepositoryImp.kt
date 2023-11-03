@@ -15,4 +15,10 @@ class ParkingRepositoryImp constructor(
         apiCallDomain("loading"){
             parkingAPI.getAllParking()
         }
+
+    override fun getAllAreas(): Flow<Response<List<String>>> =
+        apiCallDomain("loading area"){
+            parkingAPI.getAllAreas()
+        }
+
 }

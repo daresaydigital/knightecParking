@@ -12,11 +12,14 @@ import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
 import se.daresay.car_service.db.TOKEN
 import se.daresay.car_service.db.save
+import se.daresay.car_service.screen.BaseScreen
 import se.daresay.car_service.screen.SplashScreen
+import se.daresay.car_service.screen.parkings.ParkingAreaListScreen
+import se.daresay.car_service.screen.parkings.ParkingSpotsScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.User
 
-class SignInPasswordScreen constructor(carContext: CarContext,private val userName: String) : Screen(carContext) {
+class SignInPasswordScreen constructor(carContext: CarContext,private val userName: String) : BaseScreen(carContext) {
 
 
     private lateinit var viewModel : SignInViewModel
@@ -49,21 +52,21 @@ class SignInPasswordScreen constructor(carContext: CarContext,private val userNa
 
     private fun configViewModel(){
         lifecycleScope.launch {
-            viewModel._loginState.collect {
+            viewModel.loginState.collect {
                 when (it){
                     is Response.Idle -> {}
                     is Response.Error -> {
                         screenManager.push(SignInUserNameScreen(carContext,it.exception.message ?: "unknown error"))
                     }
                     is Response.Loading -> {
-                        Log.d("HEREHERE","Loading")
+                        // TODO should we add loading here ?
                     }
                     is Response.Data -> {
                         if (it.data.token == null)
                             screenManager.push(SignInUserNameScreen(carContext,it.data.message))
                         else {
                             carContext.save(TOKEN, it.data.token!!)
-                            screenManager.push(SplashScreen(carContext))
+                            screenManager.push(ParkingAreaListScreen(carContext))
                         }
                     }
                 }
@@ -71,8 +74,6 @@ class SignInPasswordScreen constructor(carContext: CarContext,private val userNa
         }
     }
     private fun validate(text: String){
-        Log.d("HEREHERE","HERE")
-
         viewModel.login(User(userName, text))
     }
 }

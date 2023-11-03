@@ -7,8 +7,9 @@ import androidx.car.app.model.InputCallback
 import androidx.car.app.model.Template
 import androidx.car.app.model.signin.InputSignInMethod
 import androidx.car.app.model.signin.SignInTemplate
+import se.daresay.car_service.screen.BaseScreen
 
-class SignInUserNameScreen(carContext: CarContext,val error: String? = null) : Screen(carContext) {
+class SignInUserNameScreen(carContext: CarContext,val error: String? = null) : BaseScreen(carContext) {
 
     override fun onGetTemplate(): Template {
 
