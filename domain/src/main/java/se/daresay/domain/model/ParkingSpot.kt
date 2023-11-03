@@ -15,12 +15,7 @@ data class ParkingSpot(
 enum class Area {
     KISTA,
     SOLNA,
-    UNKNOWN
 }
 
 fun toArea(str: String): Area =
-    try {
-        Area.valueOf(str)
-    } catch (e: Exception){
-        Area.UNKNOWN
-    }
+    Area.valueOf(str)
