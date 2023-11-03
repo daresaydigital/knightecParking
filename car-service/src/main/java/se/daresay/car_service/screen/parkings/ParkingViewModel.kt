@@ -34,4 +34,11 @@ class ParkingViewModel(
             }
         }
     }
+
+    fun reset() {
+        viewModelScope.launch {
+            _parkings.value = Response.Idle()
+        }
+    }
+
 }
