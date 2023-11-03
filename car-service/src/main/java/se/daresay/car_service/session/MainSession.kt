@@ -3,10 +3,16 @@ package se.daresay.car_service.session
 import android.content.Intent
 import androidx.car.app.Screen
 import androidx.car.app.Session
-import se.daresay.car_service.screen.SplashScreen
+import se.daresay.car_service.screen.BaseScreen
+import se.daresay.car_service.screen.login.SignInScreen
+import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
+import kotlin.reflect.KClass
 
-class MainSession : Session() {
+class MainSession(val screenType: KClass<out BaseScreen>) : Session() {
     override fun onCreateScreen(intent: Intent): Screen {
-        return SplashScreen(carContext)
+        if (screenType == SignInScreen::class)
+            return SignInScreen(carContext)
+        else
+            return ParkingOfficeListScreen(carContext)
     }
 }
