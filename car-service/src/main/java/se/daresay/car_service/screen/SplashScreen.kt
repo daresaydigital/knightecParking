@@ -1,8 +1,12 @@
 package se.daresay.car_service.screen
 
-import android.util.Log
 import androidx.car.app.CarContext
+import androidx.car.app.Screen
+import androidx.car.app.model.Action
 import androidx.car.app.model.CarIcon
+import androidx.car.app.model.GridItem
+import androidx.car.app.model.GridTemplate
+import androidx.car.app.model.ItemList
 import androidx.car.app.model.Pane
 import androidx.car.app.model.PaneTemplate
 import androidx.car.app.model.Row
@@ -14,36 +18,24 @@ import kotlinx.coroutines.launch
 import se.daresay.car_service.R
 import se.daresay.car_service.db.TOKEN
 import se.daresay.car_service.db.load
-import se.daresay.car_service.screen.login.SignInScreen
-import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
+import se.daresay.car_service.screen.login.SignInPasswordScreen
+import se.daresay.car_service.screen.login.SignInUserNameScreen
+import se.daresay.car_service.screen.parkings.ParkingAreaListScreen
+import se.daresay.car_service.screen.parkings.ParkingSpotsScreen
 
 class SplashScreen(carContext: CarContext) : BaseScreen(carContext) {
 
 
     override fun onGetTemplate(): Template {
-
         val token = carContext.load(TOKEN)
-
         if (token == null){
-            Log.d("HERE","Spash")
-            screenManager.push(SignInScreen(carContext))
-            screenManager.remove(this)
-        }
-
-        lifecycleScope.launch {
-            delay(3000)
-            screenManager.push(ParkingOfficeListScreen(carContext))
+            screenManager.push(SignInUserNameScreen(carContext))
+            screenManager.remove(this@SplashScreen)
+        } else {
+            screenManager.push(ParkingAreaListScreen(carContext))
             screenManager.remove(this@SplashScreen)
         }
-        val row = Row.Builder()
-            .setTitle("Splash Screen")
-            .setImage(CarIcon.Builder(IconCompat.createWithResource(carContext, R.drawable.icon_parking)).build())
-            .build()
-        val pane = Pane.Builder()
-            .addRow(row)
-            .build()
-        return PaneTemplate.Builder(pane)
-            .setTitle("Parking")
-            .build()
+
+        return P
     }
 }
