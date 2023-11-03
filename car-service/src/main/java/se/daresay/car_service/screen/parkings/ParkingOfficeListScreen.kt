@@ -1,11 +1,13 @@
 package se.daresay.car_service.screen.parkings
 
-import android.util.Log
 import androidx.car.app.CarContext
 import androidx.car.app.model.Action
 import androidx.car.app.model.CarIcon
+import androidx.car.app.model.GridItem
+import androidx.car.app.model.GridTemplate
 import androidx.car.app.model.ItemList
 import androidx.car.app.model.ListTemplate
+import androidx.car.app.model.Pane
 import androidx.car.app.model.Row
 import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
@@ -15,26 +17,24 @@ import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
 import se.daresay.car_service.R
 import se.daresay.car_service.screen.BaseScreen
-import se.daresay.car_service.screen.login.SignInUserNameScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.Area
 
-class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
+class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
 
     private var viewModel : ParkingViewModel = get(ParkingViewModel::class.java)
     private var listBuilder = ItemList.Builder()
-    private var chosenArea = Area.UNKNOWN
     private var loading = true
 
 
     override fun onCreate(owner: LifecycleOwner) {
-        area()
+        office()
         parkingSpots()
     }
 
-    private fun area(){
+    private fun office(){
         lifecycleScope.launch {
-            viewModel.area.collect{
+            viewModel.office.collect{
                 when(it){
                     is Response.Idle -> {
                         viewModel.getAreas()
@@ -44,18 +44,20 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
                     }
                     is Response.Data -> {
                         loading = false
-                        it.data.forEach { area ->
+                        it.data.forEach { office ->
                             listBuilder.addItem(
-                                Row.Builder()
+                                GridItem.Builder()
                                     .setOnClickListener {
                                         invalidate()
-                                        chosenArea = Area.valueOf(area.uppercase())
+                                        viewModel.chosenArea = Area.valueOf(office.name.uppercase())
                                         viewModel.getParkingSpots()
                                     }
+                                    .setTitle(office.name)
+                                    .setText(office.address)
                                     .setImage(
                                         CarIcon.Builder(
                                             IconCompat.createWithResource(carContext,
-                                                when(area.uppercase()){
+                                                when(office.name.uppercase()){
                                                     Area.KISTA.name -> R.drawable.icon_daresay
                                                     Area.SOLNA.name -> R.drawable.icon_knightec
                                                     else -> R.drawable.icon_unknown
@@ -63,7 +65,6 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
                                             )
                                         ).build()
                                     )
-                                    .setTitle(area)
                                     .build()
                             )
                         }
@@ -92,9 +93,7 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
                         loading = false
                         screenManager.push(ParkingSpotsScreen(
                             carContext,
-                            it.data.filter {
-                                it.area == chosenArea
-                            }
+                            it.data
                         ))
                     }
                     is Response.Loading -> {
@@ -111,7 +110,7 @@ class ParkingAreaListScreen(carContext: CarContext) : BaseScreen(carContext) {
     }
 
     override fun onGetTemplate(): Template {
-        val listTemplate = ListTemplate.Builder()
+        val listTemplate = GridTemplate.Builder()
             .setTitle("Office List")
             .setHeaderAction(Action.APP_ICON)
             .setLoading(loading)

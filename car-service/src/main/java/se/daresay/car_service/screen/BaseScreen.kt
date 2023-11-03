@@ -1,5 +1,6 @@
 package se.daresay.car_service.screen
 
+import android.util.Log
 import androidx.car.app.CarContext
 import androidx.car.app.Screen
 import androidx.lifecycle.DefaultLifecycleObserver

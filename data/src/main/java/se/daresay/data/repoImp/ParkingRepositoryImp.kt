@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import se.daresay.data.base.apiCallDomain
 import se.daresay.data.service.ParkingAPI
 import se.daresay.domain.base.Response
+import se.daresay.domain.model.Office
 import se.daresay.domain.model.ParkingSpot
 import se.daresay.domain.repo.ParkingRepository
 
@@ -16,7 +17,7 @@ class ParkingRepositoryImp constructor(
             parkingAPI.getAllParking()
         }
 
-    override fun getAllAreas(): Flow<Response<List<String>>> =
+    override fun getAllAreas(): Flow<Response<List<Office>>> =
         apiCallDomain("loading area"){
             parkingAPI.getAllAreas()
         }

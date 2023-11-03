@@ -9,18 +9,7 @@ data class ParkingSpotDtoResponse(
 ): ToDomain<List<ParkingSpot>>{
     override fun toDomain(): List<ParkingSpot> {
         return response.map {
-            with(it){
-                ParkingSpot(
-                    id = id,
-                    name = name,
-                    area = toArea(area),
-                    description = description,
-                    isActive = isActive,
-                    latitude = latitude,
-                    longitude = longitude
-                )
-            }
-
+            it.toDomain()
         }
     }
 }

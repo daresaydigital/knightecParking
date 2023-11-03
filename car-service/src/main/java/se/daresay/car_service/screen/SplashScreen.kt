@@ -1,7 +1,7 @@
 package se.daresay.car_service.screen
 
+import android.util.Log
 import androidx.car.app.CarContext
-import androidx.car.app.Screen
 import androidx.car.app.model.CarIcon
 import androidx.car.app.model.Pane
 import androidx.car.app.model.PaneTemplate
@@ -14,10 +14,8 @@ import kotlinx.coroutines.launch
 import se.daresay.car_service.R
 import se.daresay.car_service.db.TOKEN
 import se.daresay.car_service.db.load
-import se.daresay.car_service.screen.login.SignInPasswordScreen
-import se.daresay.car_service.screen.login.SignInUserNameScreen
-import se.daresay.car_service.screen.parkings.ParkingAreaListScreen
-import se.daresay.car_service.screen.parkings.ParkingSpotsScreen
+import se.daresay.car_service.screen.login.SignInScreen
+import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
 
 class SplashScreen(carContext: CarContext) : BaseScreen(carContext) {
 
@@ -27,13 +25,14 @@ class SplashScreen(carContext: CarContext) : BaseScreen(carContext) {
         val token = carContext.load(TOKEN)
 
         if (token == null){
-            screenManager.push(SignInUserNameScreen(carContext))
+            Log.d("HERE","Spash")
+            screenManager.push(SignInScreen(carContext))
             screenManager.remove(this)
         }
 
         lifecycleScope.launch {
             delay(3000)
-            screenManager.push(ParkingAreaListScreen(carContext))
+            screenManager.push(ParkingOfficeListScreen(carContext))
             screenManager.remove(this@SplashScreen)
         }
         val row = Row.Builder()
