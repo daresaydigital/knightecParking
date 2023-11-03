@@ -19,10 +19,7 @@ class App: Application(){
             // Reference Android context
             androidContext(this@App)
             // Load modules
-            modules(apiModule)
-            modules(repoModule)
-            modules(viewModelModule)
-            modules(usecaseModule)
+            modules(apiModule, repoModule, viewModelModule, usecaseModule)
         }
     }
 }

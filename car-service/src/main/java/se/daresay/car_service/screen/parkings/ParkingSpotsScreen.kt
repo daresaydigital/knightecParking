@@ -10,6 +10,7 @@ import androidx.car.app.model.Template
 import androidx.core.graphics.drawable.IconCompat
 import se.daresay.car_service.R
 import se.daresay.car_service.screen.BaseScreen
+import se.daresay.car_service.screen.details.DetailsScreen
 import se.daresay.domain.model.ParkingSpot
 
 class ParkingSpotsScreen(
@@ -35,7 +36,7 @@ class ParkingSpotsScreen(
             .setTitle(item.name)
             .setText(item.description)
             .setOnClickListener {
-                // TODO navigate to next screen
+                screenManager.push(DetailsScreen(carContext, item.id))
             }
             .setImage(
                 CarIcon.Builder(

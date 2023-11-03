@@ -10,4 +10,10 @@ interface ParkingRepository {
 
     fun getAllAreas(): Flow<Response<List<Office>>>
 
+    fun getSpotDetails(spotId: Int): Flow<ParkingSpot?>
+
+    suspend fun setFavorite(spot: ParkingSpot)
+
+    fun getFavorites(): Flow<List<ParkingSpot>>
 }
+
