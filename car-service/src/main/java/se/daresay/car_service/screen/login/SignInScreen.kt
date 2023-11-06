@@ -131,22 +131,9 @@ class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
             }
             launch {
                 viewModel.loginState.collect {
-                    when (it){
-                        is Response.Idle -> {}
-                        is Response.Error -> {
-                            viewModel.errorSignIn(it.exception.message?:"Error")
-                        }
-                        is Response.Loading -> {
-                            // TODO should we add loading here ?
-                        }
-                        is Response.Data -> {
-                            if (it.data.token == null)
-                                viewModel.errorSignIn(it.data.message)
-                            else {
-                                carContext.save(TOKEN, it.data.token!!)
-                                screenManager.push(ParkingOfficeListScreen(carContext))
-                            }
-                        }
+                    it?.token?.let {
+                        carContext.save(TOKEN, it)
+                        screenManager.push(ParkingOfficeListScreen(carContext))
                     }
                 }
             }
