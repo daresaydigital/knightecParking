@@ -1,39 +1,88 @@
 package se.daresay.car_service.screen.login
 
+import android.provider.ContactsContract.Data
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get
+import se.daresay.car_service.db.Editor
+import se.daresay.car_service.db.TOKEN
+import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.Login
 import se.daresay.domain.model.User
 import se.daresay.domain.usecase.LogIn
+import java.util.Date
 
 class SignInViewModel(private val logIn: LogIn): ViewModel() {
+    /**
+     * this viewModel is used both for Compose layer and Car layer
+     * [loginState] : both
+     * [signInState] : car
+     * [userInState] : both
+     */
 
-    private val _loginState: MutableStateFlow<Response<Login>> = MutableStateFlow(Response.Idle())
+    private val editor: Editor = get(Editor::class.java)
+    private val _loginState: MutableStateFlow<Login?> = MutableStateFlow(null)
     val loginState = _loginState.asStateFlow()
 
-    private val _signInState: MutableStateFlow<SignInState> = MutableStateFlow(SignInState.Username(
-        null)
-    )
+    private val _signInState: MutableStateFlow<SignInState> = MutableStateFlow(SignInState.Username(null))
     val signInState = _signInState.asStateFlow()
 
-    private var user = User("", "")
+    private val _userState: MutableStateFlow<User> = MutableStateFlow(User("", ""))
+    val userInState = _userState.asStateFlow()
+    init {
+        viewModelScope.launch {
+            editor.load(TOKEN).collect {
+                it?.let { token ->
+                    if (token != "null")
+                        _loginState.update {
+                            Login(
+                                token = token,
+                                message = ""
+                            )
+                        }
+                }
+            }
+        }
+    }
+
+
 
     fun login(){
-        if (user.password.isNotEmpty()) {
+        if (userInState.value.password.isNotEmpty() && userInState.value.username.isNotEmpty()) {
             viewModelScope.launch {
-                logIn.invoke(user).collect{
-                    _loginState.value = it
+                logIn.invoke(userInState.value).collect{
+                    when (it) {
+                        is Response.Idle -> {}
+                        is Response.Loading -> {}
+                        is Response.Error -> {
+                            errorSignIn(it.exception.message?:"Error")
+                        }
+                        is Response.Data -> {
+                            if (it.data.token == null){
+                                errorSignIn(it.data.message)
+                            } else
+                                editor.save(TOKEN, it.data.token!!)
+                        }
+                    }
                 }
             }
         } else {
             _signInState.update {
                 SignInState.Password(
-                    "password can't be empty",
+                    "username or password can't be empty",
+                )
+            }
+
+            // this line is for compose layer and not used in the other
+            _loginState.update {
+                Login(
+                    null, "username or password can't be empty"
                 )
             }
         }
@@ -46,15 +95,15 @@ class SignInViewModel(private val logIn: LogIn): ViewModel() {
     }
 
     fun updateUsername(text: String) {
-        user = user.copy(username = text)
+        _userState.update { it.copy(username = text) }
     }
 
     fun updatePassword(text: String) {
-        user = user.copy(password = text)
+        _userState.update { it.copy(password = text) }
     }
 
     fun goToPassword() {
-        if (user.username.isNotEmpty()) {
+        if (userInState.value.username.isNotEmpty()) {
             _signInState.update {
                 SignInState.Password(
                     null,
@@ -69,15 +118,21 @@ class SignInViewModel(private val logIn: LogIn): ViewModel() {
         }
     }
 
-    fun errorSignIn(error: String) {
-        user = User("", "")
+    private fun errorSignIn(error: String) {
+
+        _loginState.update {
+            Login(null, error)
+        }
         _signInState.update {
             SignInState.Username(
                 error,
             )
         }
         _loginState.update {
-            Response.Idle()
+            Login(null, error)
+        }
+        _userState.update {
+            User("", "")
         }
     }
 }

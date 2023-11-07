@@ -45,8 +45,6 @@ android {
 
 dependencies {
 
-    implementation project(":car-service")
-
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
@@ -60,10 +58,15 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation project(":car-service")
+    implementation project(":data")
+    implementation project(":domain")
     androidTestImplementation platform('androidx.compose:compose-bom:2023.03.00')
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation "androidx.car.app:app:$car_app_library_version"
     implementation "androidx.compose.runtime:runtime-livedata:1.5.4"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 }

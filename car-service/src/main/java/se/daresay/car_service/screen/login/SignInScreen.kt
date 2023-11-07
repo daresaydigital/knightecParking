@@ -12,11 +12,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
-import se.daresay.car_service.db.TOKEN
-import se.daresay.car_service.db.save
 import se.daresay.car_service.screen.BaseScreen
 import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
-import se.daresay.domain.base.Response
 
 class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
     private var viewModel : SignInViewModel = get(SignInViewModel::class.java)
@@ -131,25 +128,12 @@ class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
             }
             launch {
                 viewModel.loginState.collect {
-                    when (it){
-                        is Response.Idle -> {}
-                        is Response.Error -> {
-                            viewModel.errorSignIn(it.exception.message?:"Error")
-                        }
-                        is Response.Loading -> {
-                            // TODO should we add loading here ?
-                        }
-                        is Response.Data -> {
-                            if (it.data.token == null)
-                                viewModel.errorSignIn(it.data.message)
-                            else {
-                                carContext.save(TOKEN, it.data.token!!)
-                                screenManager.push(ParkingOfficeListScreen(carContext))
-                            }
-                        }
+                    it?.token?.let {
+                        screenManager.push(ParkingOfficeListScreen(carContext))
                     }
                 }
             }
         }
     }
+
 }
