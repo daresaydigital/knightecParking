@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,8 +25,8 @@ import se.daresay.app.Node
 import se.daresay.app.navigate
 import se.daresay.app.ui.theme.Pink80
 import se.daresay.app.ui.theme.Purple80
+import se.daresay.car_service.db.Editor.save
 import se.daresay.car_service.db.TOKEN
-import se.daresay.car_service.db.save
 import se.daresay.car_service.screen.login.SignInViewModel
 import se.daresay.domain.model.User
 
@@ -40,7 +39,7 @@ fun SignInScreenCompose(
     val error = viewModel.loginState.collectAsState().value?.message?:""
     viewModel.loginState.collectAsState().value?.let {
         it.token?.let {
-            LocalContext.current.save(TOKEN, it)
+            save(TOKEN, it)
             navController.navigate(Node.CarConnection)
         }
     }
@@ -65,7 +64,6 @@ fun SignInScreenCompose(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(

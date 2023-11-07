@@ -10,13 +10,14 @@ import androidx.car.app.model.signin.InputSignInMethod
 import androidx.car.app.model.signin.SignInTemplate
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.get
+import se.daresay.car_service.db.Editor.load
+import se.daresay.car_service.db.Editor.save
 import se.daresay.car_service.db.TOKEN
-import se.daresay.car_service.db.save
 import se.daresay.car_service.screen.BaseScreen
 import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
-import se.daresay.domain.base.Response
 
 class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
     private var viewModel : SignInViewModel = get(SignInViewModel::class.java)
@@ -24,6 +25,15 @@ class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
         configViewModel()
+
+        lifecycleScope.launch {
+            load(TOKEN).collect {
+                it?.let {
+                    if (it != "null")
+                        screenManager.push(ParkingOfficeListScreen(carContext))
+                }
+            }
+        }
 
         val callback: OnBackPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -132,11 +142,11 @@ class SignInScreen(carContext: CarContext): BaseScreen(carContext) {
             launch {
                 viewModel.loginState.collect {
                     it?.token?.let {
-                        carContext.save(TOKEN, it)
-                        screenManager.push(ParkingOfficeListScreen(carContext))
+                        save(TOKEN, it)
                     }
                 }
             }
         }
     }
+
 }
