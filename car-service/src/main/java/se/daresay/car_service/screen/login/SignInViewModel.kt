@@ -8,6 +8,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.get
+import se.daresay.car_service.db.Editor
+import se.daresay.car_service.db.TOKEN
+import se.daresay.car_service.screen.parkings.ParkingOfficeListScreen
 import se.daresay.domain.base.Response
 import se.daresay.domain.model.Login
 import se.daresay.domain.model.User
@@ -22,6 +26,7 @@ class SignInViewModel(private val logIn: LogIn): ViewModel() {
      * [userInState] : both
      */
 
+    private val editor: Editor = get(Editor::class.java)
     private val _loginState: MutableStateFlow<Login?> = MutableStateFlow(null)
     val loginState = _loginState.asStateFlow()
 
@@ -30,6 +35,23 @@ class SignInViewModel(private val logIn: LogIn): ViewModel() {
 
     private val _userState: MutableStateFlow<User> = MutableStateFlow(User("", ""))
     val userInState = _userState.asStateFlow()
+    init {
+        viewModelScope.launch {
+            editor.load(TOKEN).collect {
+                it?.let { token ->
+                    if (token != "null")
+                        _loginState.update {
+                            Login(
+                                token = token,
+                                message = ""
+                            )
+                        }
+                }
+            }
+        }
+    }
+
+
 
     fun login(){
         if (userInState.value.password.isNotEmpty() && userInState.value.username.isNotEmpty()) {
@@ -45,7 +67,7 @@ class SignInViewModel(private val logIn: LogIn): ViewModel() {
                             if (it.data.token == null){
                                 errorSignIn(it.data.message)
                             } else
-                                _loginState.value = it.data
+                                editor.save(TOKEN, it.data.token!!)
                         }
                     }
                 }

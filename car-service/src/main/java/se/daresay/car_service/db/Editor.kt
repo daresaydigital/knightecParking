@@ -9,15 +9,13 @@ import kotlinx.coroutines.flow.Flow
 private const val SHARED_PREF = "KnightecCarPark"
 
 
-object Editor {
-    private lateinit var flowSharedPreferences : FlowSharedPreferences
-    private lateinit var sharedPreferences : SharedPreferences
+class Editor (context: Context) {
+    private val flowSharedPreferences : FlowSharedPreferences
+    private val sharedPreferences : SharedPreferences
 
-    fun build(context: Context) {
-        if (!::flowSharedPreferences.isInitialized) {
-            sharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
-            flowSharedPreferences = FlowSharedPreferences(sharedPreferences)
-        }
+    init {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF, Context.MODE_PRIVATE)
+        flowSharedPreferences = FlowSharedPreferences(sharedPreferences)
     }
 
     fun save(key: String, value: String) {

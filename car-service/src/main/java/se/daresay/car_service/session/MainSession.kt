@@ -8,6 +8,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.Koin
 import org.koin.core.context.GlobalContext
 import org.koin.core.context.stopKoin
+import se.daresay.car_service.di.editorModule
 import se.daresay.car_service.di.viewModelModule
 import se.daresay.car_service.screen.BaseScreen
 import se.daresay.car_service.screen.login.SignInScreen
@@ -26,7 +27,7 @@ class MainSession(val screenType: KClass<out BaseScreen>) : Session() {
             // Reference Android context
             androidContext(this@MainSession.carContext)
             // Load modules
-            modules(apiModule, repoModule, viewModelModule, usecaseModule)
+            modules(editorModule, apiModule, repoModule, viewModelModule, usecaseModule)
         }
 
 

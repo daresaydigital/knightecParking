@@ -45,8 +45,6 @@ android {
 
 dependencies {
 
-    implementation project(":car-service")
-
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'
@@ -71,5 +69,4 @@ dependencies {
     implementation "androidx.compose.runtime:runtime-livedata:1.5.4"
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "androidx.navigation:navigation-compose:$nav_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
 }
