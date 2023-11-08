@@ -29,7 +29,6 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
     private var listBuilder = ItemList.Builder()
     private var loading = true
 
-
     override fun onCreate(owner: LifecycleOwner) {
         office()
         parkingSpots()
@@ -49,28 +48,30 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
                         loading = false
 
                         it.data.forEach { office ->
-                            listBuilder.addItem(
-                                GridItem.Builder()
-                                    .setOnClickListener {
-                                        invalidate()
-                                        viewModel.chosenArea = Area.valueOf(office.name.uppercase())
-                                        viewModel.getParkingSpots()
-                                    }
-                                    .setTitle(office.name)
-                                    .setText(office.address)
-                                    .setImage(
-                                        CarIcon.Builder(
-                                            IconCompat.createWithResource(carContext,
-                                                when(office.name.uppercase()){
-                                                    Area.KISTA.name -> R.drawable.icon_daresay
-                                                    Area.SOLNA.name -> R.drawable.icon_knightec
-                                                    else -> R.drawable.icon_unknown
-                                                }
-                                            )
-                                        ).build()
+
+                            val row = Row.Builder()
+                                .setOnClickListener {
+                                    invalidate()
+                                    viewModel.chosenArea = Area.valueOf(office.name.uppercase())
+                                    viewModel.getParkingSpots()
+                                }
+                                .setTitle(office.name)
+                            row.addText(office.address)
+                            office.phoneNumber?.let {
+                                row.addText(it)
+                            }
+                            row.setImage(
+                                CarIcon.Builder(
+                                    IconCompat.createWithResource(carContext,
+                                        when(office.name.uppercase()){
+                                            Area.KISTA.name -> R.drawable.icon_daresay
+                                            Area.SOLNA.name -> R.drawable.icon_knightec
+                                            else -> R.drawable.icon_unknown
+                                        }
                                     )
-                                    .build()
+                                ).build()
                             )
+                            listBuilder.addItem(row.build())
                         }
 
                         invalidate()
@@ -136,11 +137,9 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
     }
 
     override fun onGetTemplate(): Template {
-        val listTemplate = GridTemplate.Builder()
+        val listTemplate = ListTemplate.Builder()
             .setTitle("Office List")
             .setHeaderAction(Action.APP_ICON)
-            .setActionStrip(prepareFavorites())
-            .setLoading(loading)
         if (loading)
             listTemplate.setLoading(true)
         else

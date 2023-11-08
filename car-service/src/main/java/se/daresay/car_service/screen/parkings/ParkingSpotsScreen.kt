@@ -1,6 +1,7 @@
 package se.daresay.car_service.screen.parkings
 
 import androidx.car.app.CarContext
+import androidx.car.app.CarToast
 import androidx.car.app.model.Action
 import androidx.car.app.model.CarIcon
 import androidx.car.app.model.GridItem
@@ -36,7 +37,11 @@ class ParkingSpotsScreen(
             .setTitle(item.name)
             .setText(item.description)
             .setOnClickListener {
-                screenManager.push(DetailsScreen(carContext, item.id))
+                if(item.isActive)
+                    screenManager.push(DetailsScreen(carContext, item.id))
+                else
+                    CarToast.makeText(carContext,
+                        "Parking spot is not available",CarToast.LENGTH_SHORT).show()
             }
             .setImage(
                 CarIcon.Builder(
