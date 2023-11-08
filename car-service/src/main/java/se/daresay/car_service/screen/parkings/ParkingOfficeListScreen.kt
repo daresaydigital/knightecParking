@@ -139,6 +139,7 @@ class ParkingOfficeListScreen(carContext: CarContext) : BaseScreen(carContext) {
     override fun onGetTemplate(): Template {
         val listTemplate = ListTemplate.Builder()
             .setTitle("Office List")
+            .setActionStrip(prepareFavorites())
             .setHeaderAction(Action.APP_ICON)
         if (loading)
             listTemplate.setLoading(true)
