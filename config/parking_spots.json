@@ -1,0 +1,94 @@
+{
+  "response": [
+    {
+      "id": 1,
+      "name": "Parking for Company Cars",
+      "area": "SOLNA",
+      "description": "The parking spaces allocated to Knightec are exclusively reserved for company vehicles. However, we do recognize that there may be circumstances necessitating exceptions. Should you require a Knightec parking spot for shorter meetings during the day or evening events, please contact our Office Coordinator in advance to seek authorization.",
+      "isActive": true,
+      "latitude": 59.3660103844574,
+      "longitude": 18.011039614718328
+    },
+    {
+      "id": 2,
+      "name": "General Parking Garage",
+      "area": "SOLNA",
+      "description": "For guest parking, we have designated spaces available in the garage located on level G1. To access these spaces, please take the elevator in hall B to the entrance floor of the main building and subsequently utilize one of the elevators in hall A to reach the Knightec Office.",
+      "isActive": true,
+      "latitude": 59.3660103844574,
+      "longitude": 18.011039614718328
+    },
+    {
+      "id": 3,
+      "name": "Daresay parking spots",
+      "area": "KISTA",
+      "description": "Parking spots from 85 to 90. Each spot marked sign Daresay",
+      "isActive": true,
+      "latitude": 59.408108856428285,
+      "longitude": 17.955736743329215
+    },
+    {
+      "id": 4,
+      "name": "Old Daresay parking spots",
+      "area": "KISTA",
+      "description": "Spots shift to places from 85 to 90",
+      "isActive": false,
+      "latitude": 59.408331,
+      "longitude": 17.955120
+    },
+    {
+      "id": 5,
+      "name": "Parking Costs",
+      "area": "SOLNA",
+      "description": "It is the standard practice for Knightec staff to personally cover the costs associated with their parking spots unless your immediate supervisor or leader has approved an exception. In cases where Knightec is responsible for parking expenses, we require that the expenditure be duly recorded in Xledger.",
+      "isActive": true,
+      "latitude": 59.3660103844574,
+      "longitude": 18.011039614718328
+    },
+    {
+      "id": 6,
+      "name": "Parkman i Sverige AB, Målgaraget, Gårdsvägen",
+      "area": "SOLNA",
+      "description": "The closest alternative parking garage can be found at Gårdsvägen 17, which also necessitates the purchase of a parking ticket. ",
+      "isActive": true,
+      "latitude": 59.368037649484705,
+      "longitude": 18.009555832519112
+    },
+    {
+      "id": 7,
+      "name": "Mall of Scandinavias parkeringshus",
+      "area": "SOLNA",
+      "description": "Moreover, approximately 3,700 parking spaces are available at the Mall of Scandinavia, conveniently located within a 10-minute walk from our office. Notably, the first 2 hours of parking at the Mall of Scandinavia are complimentary (extended to 4 hours for members), after which a fee of 30SEK is levied for every additional half hour.",
+      "isActive": true,
+      "latitude": 59.370249264921895,
+      "longitude": 18.005441587149573
+    },
+    {
+      "id": 8,
+      "name": "Public spots",
+      "area": "KISTA",
+      "description": "Free public spots. Max duration 2 hours",
+      "isActive": true,
+      "latitude": 59.404519,
+      "longitude": 17.959330
+    },
+    {
+      "id": 9,
+      "name": "Paied parking",
+      "area": "KISTA",
+      "description": "So expensive parking but very close to office",
+      "isActive": true,
+      "latitude": 59.406456,
+      "longitude": 17.960619
+    },
+    {
+      "id": 10,
+      "name": "Street Parking",
+      "area": "SOLNA",
+      "description": "Additional parking options are available on the streets in the surrounding vicinity, but please be aware that these areas require the purchase of a parking ticket.",
+      "isActive": true,
+      "latitude": 59.36563220041408,
+      "longitude": 18.012872655611755
+    }
+  ]
+}

@@ -1,6 +1,4 @@
 # knightecParking
+Username : Ali, Password : 1
 
-if you want to try the app you must login with :
-username : Ali , password = 1
-
-![image](https://github.com/daresaydigital/knightecParking/assets/22474786/8a9e58e8-027d-464a-be62-e3d9e1b98515)
+<img width="1091" alt="image" src="https://github.com/sasssass/knightecParking/assets/22474786/0430d4fd-7540-4c86-b816-45d4bda46c62">

@@ -1,0 +1,14 @@
+{
+  "response": [
+    {
+      "name" : "Solna",
+      "phoneNumber" : "084555300",
+      "address" : "Rättarvägen 3, 169 68 Solna"
+    },
+    {
+      "name" : "Kista",
+      "phoneNumber" : null,
+      "address" : "Arne Beurlings Torg 3, 164 40 Kista"
+    }
+  ]
+}
