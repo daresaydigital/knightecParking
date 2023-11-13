@@ -1,0 +1,94 @@
+{
+  "response": [
+    {
+      "id": 1,
+      "name": "Parking Spot 1",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 1",
+      "isActive": true,
+      "latitude": 55.8275,
+      "longitude": 14.5693
+    },
+    {
+      "id": 2,
+      "name": "Parking Spot 2",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 2",
+      "isActive": false,
+      "latitude": 55.9732,
+      "longitude": 14.2798
+    },
+    {
+      "id": 3,
+      "name": "Daresay parking spots",
+      "area": "KISTA",
+      "description": "Parking spots from 85 to 90. Each spot marked sign Daresay",
+      "isActive": true,
+      "latitude": 59.408108856428285,
+      "longitude": 17.955736743329215
+    },
+    {
+      "id": 4,
+      "name": "Old Daresay parking spots",
+      "area": "KISTA",
+      "description": "Spots shift to places from 85 to 90",
+      "isActive": false,
+      "latitude": 59.408331,
+      "longitude": 17.955120
+    },
+    {
+      "id": 5,
+      "name": "Parking Spot 5",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 5",
+      "isActive": true,
+      "latitude": 55.711,
+      "longitude": 14.972
+    },
+    {
+      "id": 6,
+      "name": "Parking Spot 6",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 6",
+      "isActive": false,
+      "latitude": 56.332,
+      "longitude": 14.444
+    },
+    {
+      "id": 7,
+      "name": "Parking Spot 7",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 7",
+      "isActive": true,
+      "latitude": 55.555,
+      "longitude": 14.777
+    },
+    {
+      "id": 8,
+      "name": "Public spots",
+      "area": "KISTA",
+      "description": "Free public spots. Max duration 2 hours",
+      "isActive": true,
+      "latitude": 59.404519,
+      "longitude": 17.959330
+    },
+    {
+      "id": 9,
+      "name": "Paied parking",
+      "area": "KISTA",
+      "description": "So expensive parking but very close to office",
+      "isActive": true,
+      "latitude": 59.406456,
+      "longitude": 17.960619
+    },
+    {
+      "id": 10,
+      "name": "Parking Spot 10",
+      "area": "SOLNA",
+      "description": "Description of Parking Spot 10",
+      "isActive": false,
+      "latitude": 56.987,
+      "longitude": 14.789
+    }
+  ]
+}

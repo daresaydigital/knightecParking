@@ -26,7 +26,7 @@ val apiModule = module {
     single {
         Retrofit.Builder()
             .client(get())
-            .baseUrl("https://gist.githubusercontent.com/sasssass/")
+            .baseUrl("https://raw.githubusercontent.com/daresaydigital/knightecParking/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
